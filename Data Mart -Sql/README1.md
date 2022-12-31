@@ -204,3 +204,33 @@ AFRICA | 9 | 276320987
 CANADA | 9 | 69067959
 
 
+####  What is the total count of transactions for each platform?
+````sql
+select platform,
+       sum(transactions) as total_transactions
+from clean_weekly_sales
+group by platform;
+````
+platform | total_transactions
+--- | ---
+Retail | 1081934227
+Shopify | 5925169
+#### What is the percentage of sales for Retail vs Shopify for each month?
+````sql
+with cte_monthly_platform_sales as 
+(select month_number,
+        calender_year,
+	platform,
+        sum(sales) as monthly_sales
+from clean_weekly_sales
+group by month_number,calender_year,platform)
+
+select month_number,calender_year,
+      round(100*max(case when platform = 'Retail'
+      then monthly_sales else null end)/sum(monthly_sales),2) as retail_percentage,
+      round(100*max(case when platform = 'Shopify'
+      then monthly_sales else null end)/sum(monthly_sales),2) as shopify_percentage
+from cte_monthly_platform_sales
+group by month_number,calender_year;
+````
+
