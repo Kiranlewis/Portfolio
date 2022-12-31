@@ -67,8 +67,8 @@ case when left(segment,1) = 'C' then 'Couples'
 round(sales/transactions,2) as avg_transaction
 from weekly_sales ;
 ````
-month_number | calender_year | region | platform | segment | age_band | demographic | customer_type | transactions | sales
------------- |------------ |------------ |------------ |------------ |------------ |------------ |------------ |------------ |------------ |
+week_date | week_number | month_number | calender_year | region | platform | segment | age_band | demographic | customer_type | transactions | sales
+------------ |------------ |------------ |------------ |------------ |------------ |------------ |------------ |------------ |------------ |------------ |------------ |
 2020-08-31 | 35 | 8 | 2020 | ASIA | Retail | C3 | Retirees | Couples | New | 120631 | 3656163 | 30.31
 2020-08-31 | 35 | 8 | 2020 | ASIA | Retail | F1 | Young Adults | Families | New | 31574 | 996575 | 31.56
 2020-08-31 | 35 | 8 | 2020 | USA | Retail | null | Unknown | Unknown | Guest | 529151 | 16509610 | 31.20
