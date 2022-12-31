@@ -29,8 +29,8 @@ sales | int
 
 **Results:**
 
-week_date | region | platform | segment | customer_type | transactions | sales |
--------- | -------- | -------- | -------- | -------- | -------- | 
+week_date|region|platform|segment|customer_type|transactions|sales|
+--------|--------|--------|--------|--------|--------| 
 
 
 
