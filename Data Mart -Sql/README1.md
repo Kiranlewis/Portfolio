@@ -97,6 +97,38 @@ select * from seq52;
 
 select x as week_day from seq52  where x not in (select week_number from clean_weekly_sales);
 ````
+
+week_day|
+---|
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+
 #### How many total transactions were there for each year in the dataset?
 ````sql
 select calender_year, 
