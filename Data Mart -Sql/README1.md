@@ -137,6 +137,13 @@ from clean_weekly_sales
 group by calender_year
 order by calender_year;
 ````
+
+calender_year|total_transactions
+---|---|
+2018 |	346406460
+2019 |	365639285
+2020 |	375813651
+
 ####  What are the total sales for each region for each month?
 ````sql
 select region,month_number,sum(sales) as total_sales
