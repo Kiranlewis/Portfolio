@@ -231,7 +231,8 @@ select month_number,calender_year,
       round(100*max(case when platform = 'Shopify'
       then monthly_sales else null end)/sum(monthly_sales),2) as shopify_percentage
 from cte_monthly_platform_sales
-group by month_number,calender_year;
+group by month_number,calender_year
+order by calender_year,month_number;
 ````
 
 month_number | calender_year | retail_percentage | shopify_percentage
@@ -266,3 +267,26 @@ from clean_weekly_sales
 group by calender_year,demographic
 order by calender_year asc; 
 ````
+calender_year | demographic | yearly_sales | percentage
+--- | --- | --- | ---
+2018 | Couples | 3402388688 | 30.38
+2018 | Families | 4125558033 | 31.25
+2018 | Unknown | 5369434106 | 32.86
+2019 | Couples | 3749251935 | 33.47
+2019 | Families | 4463918344 | 33.81
+2019 | Unknown | 5532862221 | 33.86
+2020 | Couples | 4049566928 | 36.15
+2020 | Families | 4614338065 | 34.95
+2020 | Unknown | 5436315907 | 33.27
+#### Which age_band and demographic contributes the most to Retail sales?
+````sql
+select age_band, demographic, platform,sum(sales) as sales
+from clean_weekly_sales
+where platform = 'Retail'
+group by age_band,demographic,platform
+order by sales desc 
+limit 1;
+````
+age_band | demographic | platform | sales
+--- | --- | --- | ---
+Unknown | Unknown | Retail | 16067285533
