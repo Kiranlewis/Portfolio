@@ -68,8 +68,23 @@ round(sales/transactions,2) as avg_transaction
 from weekly_sales ;
 ````
 
+#### Which week numbers are missing from the dataset?
+````sql
+create table seq100
+(x int not null auto_increment primary key);
+insert into seq100 values (),(),(),(),(),(),(),(),(),();
+insert into seq100 values (),(),(),(),(),(),(),(),(),();
+insert into seq100 values (),(),(),(),(),(),(),(),(),();
+insert into seq100 values (),(),(),(),(),(),(),(),(),();
+insert into seq100 values (),(),(),(),(),(),(),(),(),();
+insert into seq100 select x+50 from seq100;
 
+select * from seq100;
+create table seq52 as (select x from seq100 limit 52);
+select * from seq52;
 
+select x as week_day from seq52  where x not in (select week_number from clean_weekly_sales);
+````
 
 
 
