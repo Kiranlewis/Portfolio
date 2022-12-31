@@ -29,8 +29,14 @@ sales | int
 
 **Results:**
 
+crime_type|n_crimes|
+----------|--------|
+battery   |   39988|
+assault   |   20086|
+homicide  |     803|
+
 week_date|region|platform|segment|customer_type|transactions|sales|
---------|--------|--------|--------|--------|--------| 
+
 
 
 
