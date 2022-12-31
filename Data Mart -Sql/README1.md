@@ -233,5 +233,36 @@ select month_number,calender_year,
 from cte_monthly_platform_sales
 group by month_number,calender_year;
 ````
-#### What is the percentage of sales by demographic for each year in the dataset?
 
+month_number | calender_year | retail_percentage | shopify_percentage
+--- | --- | --- | ---
+3 | 2018 | 97.92 | 2.08
+4 | 2018 | 97.93 | 2.07
+5 | 2018 | 97.73 | 2.27
+6 | 2018 | 97.76 | 2.24
+7 | 2018 | 97.75 | 2.25
+8 | 2018 | 97.71 | 2.29
+9 | 2018 | 97.68 | 2.32
+3 | 2019 | 97.71 | 2.29
+4 | 2019 | 97.80 | 2.20
+5 | 2019 | 97.52 | 2.48
+6 | 2019 | 97.42 | 2.58
+7 | 2019 | 97.35 | 2.65
+8 | 2019 | 97.21 | 2.79
+9 | 2019 | 97.09 | 2.91
+3 | 2020 | 97.30 | 2.70
+4 | 2020 | 96.96 | 3.04
+5 | 2020 | 96.71 | 3.29
+6 | 2020 | 96.80 | 3.20
+7 | 2020 | 96.67 | 3.33
+8 | 2020 | 96.51 | 3.49
+#### What is the percentage of sales by demographic for each year in the dataset?
+````sql
+select calender_year,
+       demographic,
+       sum(sales) as yearly_sales,
+       round(100* sum(sales)/sum(sum(sales)) over (partition by demographic),2) as percentage_of_sales
+from clean_weekly_sales
+group by calender_year,demographic
+order by calender_year asc; 
+````
