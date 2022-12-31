@@ -28,6 +28,7 @@ transactions | int
 sales | int
 
 **Results:**
+
 weekdate|region|platform|segment|customer_type|transactions|sales
 --------|--------|--------|--------|--------|--------
 2020-08-31|ASIA|Retail|C3|New|120631|3656163
