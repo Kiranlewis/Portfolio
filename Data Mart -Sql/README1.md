@@ -85,8 +85,20 @@ select * from seq52;
 
 select x as week_day from seq52  where x not in (select week_number from clean_weekly_sales);
 ````
-
-
-
+#### How many total transactions were there for each year in the dataset?
+````sql
+select calender_year, 
+       sum(transactions) as total_transactions 
+from clean_weekly_sales
+group by calender_year
+order by calender_year;
+````
+####  What are the total sales for each region for each month?
+````sql
+select region,month_number,sum(sales) as total_sales
+from clean_weekly_sales
+group by region,month_number
+order by month_number asc;
+````
 
 
