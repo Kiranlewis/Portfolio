@@ -20,10 +20,10 @@ sales INT(11)
 Column Name  | Data type
 ------------- | -------------
 week_date  | date
-region  | varchar(20)
-platform | varchar(20)
-segment | varchar(10)
-customer | varchar(20)
+region  | varchar(100)
+platform | varchar(100)
+segment | varchar(100)
+customer | varchar(100)
 transactions | int
 sales | int
 
