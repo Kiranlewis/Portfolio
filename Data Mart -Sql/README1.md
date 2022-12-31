@@ -29,7 +29,7 @@ sales | int
 
 **Sample Table:**
 
-week_date|region|platform|segment|customer|transactions|sales
+week_date|region|platform|segment|customer|transactions|sales|
 ----------|--------|
 battery   |   39988|
 assault   |   20086|
