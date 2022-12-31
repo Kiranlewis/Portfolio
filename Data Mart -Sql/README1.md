@@ -16,7 +16,7 @@ transactions INT(11),
 sales INT(11)
 );
 ````
-### Schema ###
+** Schema **
 Column Name  | Data type
 ------------- | -------------
 week_date  | date
@@ -27,7 +27,7 @@ customer | varchar(100)
 transactions | int
 sales | int
 
-**Sample Table:**
+**Sample Table**
 
 week_date|region|platform|segment|customer|transactions|sales|
 --- | --- |--- | --- |--- | --- |--- |
@@ -42,6 +42,31 @@ week_date|region|platform|segment|customer|transactions|sales|
 2020-08-31 | AFRICA | Shopify | F2 | New | 318 | 49557
 2020-08-31 | AFRICA | Retail | C3 | New | 111032 | 3888162
 2020-08-31 | USA | Shopify | F1 | Existing | 1398 | 260773
+
+#### Creating a clean weekly table adding a week number,month_number,calender year, categorizing segments, calculating average transactions columns
+````sql
+create table clean_weekly_sales as
+select week_date,
+       week(week_date)as week_number,
+       month(week_date) as month_number,
+       year(week_date) as calender_year,
+       region,platform,
+case when segment = null then 'Unknown'
+     else segment
+     end as segment,
+case when right(segment,1)='1' then 'Young Adults'
+	   when right(segment,1)='2' then 'Middle Aged'
+     when right(segment,1) in ('3','4') then 'Retirees'
+     else 'Unknown' 
+     end as age_band,
+case when left(segment,1) = 'C' then 'Couples'
+     when left(segment,1) = 'F' then 'Families'
+     else 'Unknown'
+     end as demographic,
+     customer_type,transactions,sales,
+round(sales/transactions,2) as avg_transaction
+from weekly_sales ;
+````
 
 
 
