@@ -27,10 +27,9 @@ customer | varchar(100)
 transactions | int
 sales | int
 
-**Results:**
+**Sample Table:**
 
-
-week_date|region|
+week_date|region|platform|segment|customer|transactions|sales
 ----------|--------|
 battery   |   39988|
 assault   |   20086|
