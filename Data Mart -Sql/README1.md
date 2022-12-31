@@ -233,4 +233,5 @@ select month_number,calender_year,
 from cte_monthly_platform_sales
 group by month_number,calender_year;
 ````
+#### What is the percentage of sales by demographic for each year in the dataset?
 
