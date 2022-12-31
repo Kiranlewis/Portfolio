@@ -1,2 +1,3 @@
 # Data Mart #
-## Case study questiona and answers ##
+## Case study questions & answers ##
+by arunsaikirans@gmail.com
