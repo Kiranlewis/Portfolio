@@ -30,7 +30,7 @@ sales | int
 **Results:**
 
 
-week_date|region|platform|segment|customer_type|transactions|sales|
+week_date|region|
 ----------|--------|
 battery   |   39988|
 assault   |   20086|
