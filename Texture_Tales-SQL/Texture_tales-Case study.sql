@@ -31,10 +31,10 @@ from sales
 group by prod_id;
 
 -- Number of unique transactions made
-select count(distinct txn_id) as unique_transation
+select count(distinct txn_id) as unique_transcation
 from sales;
 
--- What are the average unique products purchased in each transaction
+-- What are the average unique products sold in each transaction
 with cte_transaction_products as(
 select txn_id,count(distinct prod_id) as product_count from sales 
 group by txn_id)
@@ -80,6 +80,8 @@ on sales.prod_id = product_details.product_id
 group by product_details.segment_name,product_details.segment_id;
 
 -- Top selling product for each segment
+
+with cte1 as (
 select product_details.segment_id as Segment_id ,
 product_details.segment_name as Segment, product_details.product_name as Product_name ,
 product_details.product_id as Product_id,
@@ -89,7 +91,19 @@ on sales.prod_id = product_details.product_id
 group by product_details.segment_name,product_details.segment_id,
 		 product_details.product_id,product_details.product_name
 order by Total_sales_quantity desc
-limit 5;
+)
+select Segment_id,
+       Segment,
+       Product_name,
+       Product_id,
+       Total_sales_quantity
+ from(
+select *,rank() over(partition by Segment order by Total_sales_quantity desc) as rk
+from cte1) sub
+where rk = 1
+order by Segment_id
+;
+
 
 -- The total quantity, revenue and discount for each category
 select category_name,
@@ -101,6 +115,7 @@ on sales.prod_id = product_details.product_id
 group by category_id,category_name;
 
 --  Top selling product for each category
+with cte1 as(
 select product_details.category_id as category_id,
 	   product_details.category_name as category_name,
        product_details.product_id as product_id,
@@ -112,10 +127,15 @@ group by product_details.category_id,
 		 product_details.category_name,
          product_details.product_id,
 	     product_details.product_name
-order by sales_qty desc;
+order by category_id,sales_qty desc
+)
 
-
-
+select category_id,category_name,product_id,product_name,sales_qty
+from
+(
+select *,rank() over (partition by category_id order by sales_qty) as rk 
+from cte1) tab
+where rk =1;
 
 
 
