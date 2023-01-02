@@ -159,7 +159,7 @@ unique_transaction|
 -|
 2500|
 
-#### Number of unique transactions made
+#### Average number of unique transactions made
 ````sql
 with cte_transaction_products as(
  select txn_id,
@@ -207,7 +207,9 @@ member|revenue
 true|516
 false|515
 
-#### Average revenue for member transactions and non member transactions
+
+
+#### Top 3 products by Total revenue before discount
 ````sql
 select product_details.product_name,prod_id,sum(sales.qty*sales.price) as Total_revenue
 from sales inner join product_details
@@ -222,7 +224,7 @@ Blue Polo Shirt - Mens|2a2353|217683
 Grey Fashion Jacket - Womens|9ec847|209304
 White Tee Shirt - Mens|5d267b|152000
 
-#### Average revenue for member transactions and non member transactions
+#### Total quantity, Total revenue and Total discount for each segment
 ````sql
 select product_details.segment_id,product_details.segment_name as Segment ,
 sum(sales.qty) as Total_quantity,
@@ -273,3 +275,43 @@ Segment_id|Segment|Product_name|Product_id|Total_sales_quantity
 5|Shirt|Blue Polo Shirt - Mens|2a2353|3819
 5|Shirt|White Tee Shirt - Mens|5d267b|3800
 6|Socks|Navy Solid Socks - Mens|f084eb|3792
+
+
+#### The total quantity, revenue and discount for each category
+````sql
+select category_name,
+category_id,sum(qty) as Total_quantity,
+sum(sales.qty*sales.price) as Total_revenue, 
+sum(sales.qty*sales.price*sales.discount)/100 as Total_discount 
+from sales inner join product_details
+on sales.prod_id = product_details.product_id
+group by category_id,category_name;
+````
+#### Top selling product for each category
+````sql
+with cte1 as(
+select product_details.category_id as category_id,
+	   product_details.category_name as category_name,
+       product_details.product_id as product_id,
+       product_details.product_name as product_name,
+       sum(sales.qty) as sales_qty
+from sales inner join product_details
+on sales.prod_id = product_details.product_id
+group by product_details.category_id,
+		 product_details.category_name,
+         product_details.product_id,
+	     product_details.product_name
+order by category_id,sales_qty desc
+)
+
+select category_id,category_name,product_id,product_name,sales_qty
+from
+(
+select *,rank() over (partition by category_id order by sales_qty) as rk 
+from cte1) tab
+where rk =1;
+````
+category_id|category_name|product_id|product_name|sales_qty
+-|-|-|-|-
+1|Womens|e31d39|Cream Relaxed Jeans - Womens|3707
+2|Mens|c8d436|Teal Button Up Shirt - Mens|3646
