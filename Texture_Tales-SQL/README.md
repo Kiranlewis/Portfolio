@@ -158,3 +158,34 @@ from sales;
 unique_transaction|
 -|
 2500|
+
+#### Number of unique transactions made
+````sql
+with cte_transaction_products as(
+ select txn_id,
+        count(distinct prod_id) as product_count 
+        from sales 
+group by txn_id)
+
+select round(avg(product_count)) as avg_unique_products
+from cte_transaction_products;
+````
+avg_unique_products
+-|
+6|
+
+
+#### Average Discount value per transaction
+````sql
+with cte_discount_transaction as(
+ select txn_id,
+        sum(qty*price*discount)/100 as discount_value 
+from sales
+group by txn_id)
+
+select round(avg(discount_value)) as avg_discount_value
+from cte_discount_transaction;
+````
+avg_discount_value
+-|
+62
