@@ -104,3 +104,13 @@ count | txn_type | total_amount
 1580|withdrawal|793003
 1617|purchase|806537
 
+
+#### Average deposit count and amount of past deposits across all customers
+````sql
+select round(count(customer_id)/(select count(distinct customer_id) from customer_transactions)) as average_deposit_count,
+       concat('$',round(avg(txn_amount),2)) as average_txn_amount
+from customer_transactions where txn_type = 'deposit';
+````
+average_deposit_count | average_txn_amount
+--- | --- 
+5|$508.86
