@@ -16,7 +16,7 @@ future.
 Insert image here erd diagram
 
 
-#### How many different nodes make up the Data Bank network?
+#### Different nodes make in the Data Bank network
 
 ````sql
 
@@ -29,7 +29,7 @@ Unique_Nodes
 5
 
 
-#### How many nodes are there in each region?
+#### Nodes in each region
 ````sql
 
 select reg.region_name as region_name ,
@@ -47,12 +47,42 @@ Africa|714
 Asia|665
 Europe|616
 
+#### Customers divided among the regions
+````sql
+
+select reg.region_id,
+       count(customer_id) as customers
+from customer_nodes nod inner join regions reg
+on nod.region_id = reg.region_id
+group by region_id
+order by region_id;
+````
+region_id|customers
+----|----
+1|770
+2|735
+3|714
+4|665
+5|616
 
 
-
-
-
-
+#### Total amount of transaction for each region
+````sql
+select reg.region_name,reg.region_id,sum(tra.txn_amount) as total_transaction_amount
+from regions reg inner join customer_nodes nod
+on reg.region_id = nod.region_id
+inner join customer_transactions tra
+on nod.customer_id = tra.customer_id
+group by region_id
+order by total_transaction_amount desc;
+````
+region_name|region_id|total_transaction_amount
+----|----|----
+Australia|1|4611768
+America|2|4406276
+Africa|3|4233481
+Asia|4|4057879
+Europe|5|3401552
 
 
 
