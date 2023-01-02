@@ -1,4 +1,7 @@
 # Data Mart #
+Email : arunsaikirans@gmail.com
+
+Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
 
 **Task:**
   * To analyze the sales and performance of a latest venture Data Mart. 
@@ -6,9 +9,7 @@
   * To quantify the impact of this change on the sales performance for Data Mart and its separate business areas.
 
 ## Case study questions & answers ##
-Email : arunsaikirans@gmail.com
 
-Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
 
   Table creation with the following Schema using CREATE TABLE and INSERT INTO commands
 ````sql
