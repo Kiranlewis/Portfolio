@@ -84,6 +84,23 @@ Africa|3|4233481
 Asia|4|4057879
 Europe|5|3401552
 
-4
+#### Average time taken to move clients to a new node
+````sql
+select round(avg(datediff(end_date,start_date)),2) as average_days from customer_nodes
+where end_date != '9999-12-31';
+````
 
+#### Total count and total amount for each transaction type
+````sql
+select count(*) as count ,
+       txn_type,
+       sum(txn_amount) as total_amount
+from customer_transactions
+group by txn_type;
+````
+count | txn_type | total_amount
+--- | --- | ---
+2671|deposit|1359168
+1580|withdrawal|793003
+1617|purchase|806537
 
