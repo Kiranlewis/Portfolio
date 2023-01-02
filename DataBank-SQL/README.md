@@ -29,3 +29,31 @@ Unique_Nodes
 5
 
 
+#### How many nodes are there in each region?
+````sql
+
+select reg.region_name as region_name ,
+       count(nod.node_id) as count
+       from regions reg inner join customer_nodes nod
+on reg.region_id = nod.region_id
+group by reg.region_name
+order by count desc;
+````
+region_name|count
+----|----
+Australia|770
+America|735
+Africa|714
+Asia|665
+Europe|616
+
+
+
+
+
+
+
+
+
+
+
