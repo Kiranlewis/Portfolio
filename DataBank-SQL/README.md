@@ -114,3 +114,27 @@ from customer_transactions where txn_type = 'deposit';
 average_deposit_count | average_txn_amount
 --- | --- 
 5|$508.86
+
+#### For each month - Customers making more than 1 deposit and at least either 1 purchase or 1 withdrawal in a single month
+````sql
+with transaction_count_per_month_cte  as 
+ (select customer_id,month(txn_date) as txn_month,
+ sum(if(txn_type='deposit',1,0)) as deposit_count,
+ sum(if(txn_type='withdrawal',1,0)) as withdrawal_count,
+ sum(if(txn_type='purchase',1,0)) as purchase_count
+from customer_transactions
+group by customer_id,txn_month)
+
+select txn_month,
+       count(distinct customer_id) as customer_count
+from transaction_count_per_month_cte
+where deposit_count >1 and withdrawal_count = 1 or purchase_count = 1
+group by txn_month;
+
+````
+txn_month | customer_count
+--- | --- 
+1|171
+2|211
+3|203
+4|129
