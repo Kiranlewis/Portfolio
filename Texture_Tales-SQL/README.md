@@ -189,3 +189,87 @@ from cte_discount_transaction;
 avg_discount_value
 -|
 62
+
+#### Average revenue for member transactions and non member transactions
+
+````sql
+with cte_member_revenue as(
+select member,txn_id,sum(qty*price) as Total_revenue 
+from sales
+group by member,txn_id)
+
+select member,round(avg(Total_revenue)) as revenue
+from cte_member_revenue
+group by member;
+````
+member|revenue
+-|-
+true|516
+false|515
+
+#### Average revenue for member transactions and non member transactions
+````sql
+select product_details.product_name,prod_id,sum(sales.qty*sales.price) as Total_revenue
+from sales inner join product_details
+on sales.prod_id = product_details.product_id
+group by prod_id
+order by Total_revenue desc
+limit 3 ;
+````
+product_name|prod_id|Total_revenue
+-|-|-
+Blue Polo Shirt - Mens|2a2353|217683
+Grey Fashion Jacket - Womens|9ec847|209304
+White Tee Shirt - Mens|5d267b|152000
+
+#### Average revenue for member transactions and non member transactions
+````sql
+select product_details.segment_id,product_details.segment_name as Segment ,
+sum(sales.qty) as Total_quantity,
+sum(sales.qty*sales.price) as Total_revenue,
+sum(sales.qty*sales.price*sales.discount)/100 as Total_discount
+from sales inner join product_details 
+on sales.prod_id = product_details.product_id
+group by product_details.segment_name,product_details.segment_id;
+````
+segment_id|Segment|Total_quantity|Total_revenue|Total_discount
+-|-|-|-|-
+3|Jeans|11349|208350|25343.9700
+5|Shirt|11265|406143|49594.2700
+6|Socks|11217|307977|37013.4400
+4|Jacket|11385|366983|44277.4600
+
+#### Top selling product for each segment
+````sql
+
+with cte1 as (
+select product_details.segment_id as Segment_id ,
+product_details.segment_name as Segment, product_details.product_name as Product_name ,
+product_details.product_id as Product_id,
+sum(sales.qty) as Total_sales_quantity
+from sales inner join product_details 
+on sales.prod_id = product_details.product_id
+group by product_details.segment_name,product_details.segment_id,
+		 product_details.product_id,product_details.product_name
+order by Total_sales_quantity desc
+)
+
+select Segment_id,
+       Segment,
+       Product_name,
+       Product_id,
+       Total_sales_quantity
+ from(
+select *,rank() over(partition by Segment order by Total_sales_quantity desc) as rk
+from cte1) sub
+where rk = 1
+order by Segment_id
+;
+````
+Segment_id|Segment|Product_name|Product_id|Total_sales_quantity
+-|-|-|-|-
+4|Jacket|Grey Fashion Jacket - Womens|9ec847|3876
+3|Jeans|Navy Oversized Jeans - Womens|c4a632|3856
+5|Shirt|Blue Polo Shirt - Mens|2a2353|3819
+5|Shirt|White Tee Shirt - Mens|5d267b|3800
+6|Socks|Navy Solid Socks - Mens|f084eb|3792
