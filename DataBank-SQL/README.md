@@ -17,6 +17,7 @@ Insert image here erd diagram
 
 
 #### How many different nodes make up the Data Bank network?
+
 ''''sql
 select count(distinct(node_id)) as Unique_Nodes 
        from customer_nodes;
