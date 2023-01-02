@@ -49,8 +49,8 @@ id|product_id|price
 **product_hierarchy(Sample)**
 id|parent_id|level_text|level_name
 -----|-----|-----|-----|
-1|NULL|Womens|Category
-2|NULL|Mens|Category
+1| |Womens|Category
+2| |Mens|Category
 3|1|Jeans|Segment
 4|1|Jacket|Segment
 5|2|Shirt|Segment
