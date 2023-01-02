@@ -68,3 +68,93 @@ from sales;
 Total_qty_sold|
 ---|
 45216|
+
+#### Total quantity sold for each product
+````sql
+select product_name,
+       prod_id,
+       sum(qty) as Total_qty_sold
+from sales inner join product_details
+on sales.prod_id = product_details.product_id
+group by prod_id
+order by Total_qty_sold desc;
+````
+product_name|prod_id|Total_qty_sold
+---|---|---|
+Grey Fashion Jacket - Womens|9ec847|3876
+Navy Oversized Jeans - Womens|c4a632|3856
+Blue Polo Shirt - Mens|2a2353|3819
+White Tee Shirt - Mens|5d267b|3800
+Navy Solid Socks - Mens|f084eb|3792
+Black Straight Jeans - Womens|e83aa3|3786
+Pink Fluro Polkadot Socks - Mens|2feb6b|3770
+Indigo Rain Jacket - Womens|72f5d4|3757
+Khaki Suit Jacket - Womens|d5e9a6|3752
+Cream Relaxed Jeans - Womens|e31d39|3707
+White Striped Socks - Mens|b9a74d|3655
+Teal Button Up Shirt - Mens|c8d436|3646
+
+#### Total generated revenue for all products before discounts
+````sql
+select product_name,
+       prod_id,
+       sum(sales.qty*sales.price) as revenue
+from sales inner join product_details
+on sales.prod_id = product_details.product_id
+group by prod_id
+order by revenue desc;
+````
+product_name|prod_id|revenue
+---|---|---|
+Blue Polo Shirt - Mens|2a2353|217683
+Grey Fashion Jacket - Womens|9ec847|209304
+White Tee Shirt - Mens|5d267b|152000
+Navy Solid Socks - Mens|f084eb|136512
+Black Straight Jeans - Womens|e83aa3|121152
+Pink Fluro Polkadot Socks - Mens|2feb6b|109330
+Khaki Suit Jacket - Womens|d5e9a6|86296
+Indigo Rain Jacket - Womens|72f5d4|71383
+White Striped Socks - Mens|b9a74d|62135
+Navy Oversized Jeans - Womens|c4a632|50128
+Cream Relaxed Jeans - Womens|e31d39|37070
+Teal Button Up Shirt - Mens|c8d436|36460
+
+#### Total discount amount for all products
+````sql
+select sum(qty*price*discount)/100 as Total_discount_amount
+from sales;
+````
+Total_discount_amount|
+-|
+156229.1400|
+
+#### Total discount amount for each products
+````sql
+select prod_id,
+       sum(qty*price*discount)/100 as Discount_amount
+from sales
+group by prod_id;
+````
+prod_id|Discount_amount
+-|-
+c4a632|6135.6100
+5d267b|18377.6000
+b9a74d|7410.8100
+2feb6b|12952.2700
+e31d39|4463.4000
+72f5d4|8642.5300
+2a2353|26819.0700
+f084eb|16650.3600
+e83aa3|14744.9600
+d5e9a6|10243.0500
+9ec847|25391.8800
+c8d436|4397.6000
+
+#### Number of unique transactions made
+````sql
+select count(distinct txn_id) as unique_transcation
+from sales;
+````
+unique_transaction|
+-|
+2500|
