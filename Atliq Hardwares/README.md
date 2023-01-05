@@ -4,7 +4,7 @@ Email : arunsaikirans@gmail.com
 Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
 
 ## Case study questions & answers ##
-  Report of Individual product sales (aggregated on a monthly basis at the product code level) for Croma India customer for FY-2021 so that I can track individual product sales.
+####  Report of Individual product sales (aggregated on a monthly basis at the product code level) for Croma India customer for FY-2021 to track individual product sales.
   
 The  report should contain the following fields
 * 1.Month
@@ -41,3 +41,27 @@ Month|Product_Name|variant|sold_quantity|gross_price_per_item|Total_gross_price
 1|AQ Zion Saga|Standard|121|23.7223|2870.40
 1|AQ Zion Saga|Plus|164|27.1027|4444.84
 1|AQ Zion Saga|Premium|172|28.0059|4817.01
+
+####  Monthly gross sales report for Croma India customer, it should contain 1.Month 2.Total Gross sales amount to Croma in this month ## 
+
+````sql
+select MONTH(s.date) as month ,sum(gross_price*sold_quantity) as monthly_gross_sales
+	from fact_sales_monthly s
+	join fact_gross_price g
+	on s.product_code = g.product_code and 
+       get_fiscal_year(s.date) = g.fiscal_year
+	where customer_code =90002002 	      
+	group by month
+	order by month;
+````
+month|monthly_gross_sales
+---|---|
+1|3602615.8754
+2|3719339.9102
+4|2894289.4160
+5|2805954.1692
+6|3120660.0053
+8|3612325.2139
+9|14763737.8717
+10|18713418.0124
+12|26003729.0467
