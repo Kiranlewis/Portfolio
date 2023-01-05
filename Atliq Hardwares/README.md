@@ -42,7 +42,7 @@ Month|Product_Name|variant|sold_quantity|gross_price_per_item|Total_gross_price
 1|AQ Zion Saga|Plus|164|27.1027|4444.84
 1|AQ Zion Saga|Premium|172|28.0059|4817.01
 
-####  Monthly gross sales report for Croma India customer, it should contain 1.Month 2.Total Gross sales amount to Croma in this month ## 
+####  Monthly gross sales report for Croma India customer,containing 1.Month 2.Total Gross sales amount to Croma in this month ## 
 
 ````sql
 select MONTH(s.date) as month ,sum(gross_price*sold_quantity) as monthly_gross_sales
