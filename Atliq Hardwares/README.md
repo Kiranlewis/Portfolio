@@ -42,7 +42,7 @@ Month|Product_Name|variant|sold_quantity|gross_price_per_item|Total_gross_price
 1|AQ Zion Saga|Plus|164|27.1027|4444.84
 1|AQ Zion Saga|Premium|172|28.0059|4817.01
 
-####  Monthly gross sales report for Croma India customer,containing 1.Month 2.Total Gross sales amount to Croma in this month ## 
+####  Monthly gross sales report for Croma India customer,containing 1.Month 2.Total Gross sales amount to Croma in this month 
 
 ````sql
 select MONTH(s.date) as month ,sum(gross_price*sold_quantity) as monthly_gross_sales
@@ -65,3 +65,15 @@ month|monthly_gross_sales
 9|14763737.8717
 10|18713418.0124
 12|26003729.0467
+
+#### Generate a yearly report for Croma India where there are two columns 1. Fiscal Year 2. Total Gross Sales amount In that year from Croma
+````sql
+select get_fiscal_year(s.date) as fiscal_year,round(sum(g.gross_price*s.sold_quantity),2) as Total_gross_sales_amount
+	from fact_sales_monthly s
+	join fact_gross_price g
+		 on s.product_code = g.product_code
+	where s.customer_code = 90002002 and 
+		  g.fiscal_year = get_fiscal_year(s.date)
+	group by fiscal_year
+	order by fiscal_year;
+````
