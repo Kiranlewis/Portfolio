@@ -27,5 +27,17 @@ where customer_code = 90002002 and
 	  get_fiscal_year(date) = 2021
 order by Month asc
 limit 50;
-
 ````
+
+Month|Product_Name|variant|sold_quantity|gross_price_per_item|Total_gross_price
+---|---|---|---|---|---|
+1|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|182|19.0573|3468.43
+1|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Plus|121|21.4565|2596.24
+1|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Premium|142|21.7795|3092.69
+1|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Premium Plus|35|22.9729|804.05
+1|AQ WereWolf NAS Internal Hard Drive HDD – 8.89 cm|Standard|161|23.6987|3815.49
+1|AQ WereWolf NAS Internal Hard Drive HDD – 8.89 cm|Plus|241|24.7312|5960.22
+1|AQ WereWolf NAS Internal Hard Drive HDD – 8.89 cm|Premium|41|23.6154|968.23
+1|AQ Zion Saga|Standard|121|23.7223|2870.40
+1|AQ Zion Saga|Plus|164|27.1027|4444.84
+1|AQ Zion Saga|Premium|172|28.0059|4817.01
