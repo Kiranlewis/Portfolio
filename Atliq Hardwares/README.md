@@ -111,3 +111,55 @@ date|product_code|product|variant|sold_quantity|gross_price_per_item|Total_gross
 2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|37|19.0573|705.12|0.2065|2021|559.512720
 2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|7|19.0573|133.40|0.1068|2021|119.152880
 2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|12|19.0573|228.69|0.2612|2021|168.956172
+
+#### Making a view for sales_preinv_discount
+````sql
+CREATE VIEW sales_preinv_discount AS
+   (select s.date,s.product_code,
+       p.product,p.variant,s.sold_quantity,
+       g.gross_price as gross_price_per_item,
+       ROUND(g.gross_price * s.sold_quantity,2) as Total_gross_price,
+       pre.pre_invoice_discount_pct ,
+       s.fiscal_year
+from fact_sales_monthly s
+join dim_product p
+	on s.product_code = p.product_code
+join fact_gross_price g
+    on g.product_code = p.product_code and 
+       g.fiscal_year =  s.fiscal_year
+join fact_pre_invoice_deductions pre
+    on pre.customer_code = s.customer_code and
+       pre.fiscal_year = s.fiscal_year)
+
+````
+#### Creating view for post_invoice_deductions_pct
+CREATE VIEW AS sales_postinv_discount AS(
+select 
+      s.date AS date,
+      s.fiscal_year AS fiscal_year,
+      s.customer AS customer,
+      s.customer_code AS customer_code,
+      s.market AS market,
+      s.product_code AS product_code,
+      s.product AS product,
+      s.variant AS variant,
+      s.sold_quantity AS sold_quantity,
+      s.Total_gross_price AS Total_gross_price,
+      s.pre_invoice_discount_pct AS pre_invoice_discount_pct,
+      ((1 - s.pre_invoice_discount_pct) * s.Total_gross_price) AS net_invoice_sales,
+      (po.discounts_pct + po.other_deductions_pct) AS post_invoice_deductions_pct,
+      (1 - pre_invoice_discount_pct)*Total_gross_price as net_invoice_sales,
+      (po.discounts_pct + po.other_deductions_pct) as post_invoice_deductions_pct
+from sales_preinv_discount s
+join fact_post_invoice_deductions po
+on s.date=po.date and 
+   s.product_code = po.product_code and 
+   s.customer_code = po.customer_code)
+
+#### Creating net_sales view
+````
+CREATE VIEW net_sales as (
+SELECT * ,
+     (1-post_invoice_deductions_pct)*net_invoice_sales as net_sales
+FROM gdb041.sales_postinv_discount)
+
