@@ -130,9 +130,9 @@ join fact_gross_price g
 join fact_pre_invoice_deductions pre
     on pre.customer_code = s.customer_code and
        pre.fiscal_year = s.fiscal_year)
-
 ````
 #### Creating view for post_invoice_deductions_pct
+````sql
 CREATE VIEW AS sales_postinv_discount AS(
 select 
       s.date AS date,
@@ -155,11 +155,31 @@ join fact_post_invoice_deductions po
 on s.date=po.date and 
    s.product_code = po.product_code and 
    s.customer_code = po.customer_code)
+````
 
 #### Creating net_sales view
-````
+````sql
 CREATE VIEW net_sales as (
 SELECT * ,
      (1-post_invoice_deductions_pct)*net_invoice_sales as net_sales
 FROM gdb041.sales_postinv_discount)
-
+````
+#### Creating gross_sales view
+````sql
+CREATE VIEW gross_sales as 
+(select s.date,s.fiscal_year,
+       s.customer_code,c.customer,
+       c.market,s.product_code,
+       p.product,p.variant,
+       s.sold_quantity,
+       g.gross_price,
+       round(s.sold_quantity * g.gross_price,2) as gross_price_total
+from fact_sales_monthly s
+join fact_gross_price g
+on s.product_code = g.product_code and
+   s.fiscal_year = g.fiscal_year
+join dim_customer c 
+on s.customer_code = c.customer_code
+join dim_product p
+on p.product_code = s.product_code)
+````
