@@ -77,3 +77,37 @@ select get_fiscal_year(s.date) as fiscal_year,round(sum(g.gross_price*s.sold_qua
 	group by fiscal_year
 	order by fiscal_year;
 ````
+
+
+#### Getting net invoice sales
+````sql
+with cte1 as 
+(select s.date,s.product_code,
+       p.product,p.variant,s.sold_quantity,
+       g.gross_price as gross_price_per_item,
+       ROUND(g.gross_price * s.sold_quantity,2) as Total_gross_price,
+       pre.pre_invoice_discount_pct ,
+       s.fiscal_year
+from fact_sales_monthly s
+join dim_product p
+	on s.product_code = p.product_code
+join fact_gross_price g
+    on g.product_code = p.product_code and 
+       g.fiscal_year =  s.fiscal_year
+join fact_pre_invoice_deductions pre
+    on pre.customer_code = s.customer_code and
+       pre.fiscal_year = s.fiscal_year
+where s.fiscal_year = 2021)
+
+select *,
+   (Total_gross_price - Total_gross_price*pre_invoice_discount_pct) as net_invoice_sales
+from cte1;
+````
+date|product_code|product|variant|sold_quantity|gross_price_per_item|Total_gross_price|pre_invoice_discount_pct|fiscal_year|net_invoice_sales
+--- | --- | --- | --- | --- | --- | --- | --- | --- | ---
+2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|248|19.0573|4726.21|0.0703|2021|4393.957437
+2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|240|19.0573|4573.75|0.2061|2021|3631.100125
+2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|31|19.0573|590.78|0.0974|2021|533.238028
+2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|37|19.0573|705.12|0.2065|2021|559.512720
+2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|7|19.0573|133.40|0.1068|2021|119.152880
+2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|12|19.0573|228.69|0.2612|2021|168.956172
