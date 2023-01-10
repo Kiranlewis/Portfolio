@@ -112,7 +112,7 @@ date|product_code|product|variant|sold_quantity|gross_price_per_item|Total_gross
 2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|7|19.0573|133.40|0.1068|2021|119.152880
 2020-09-01|A0118150101|AQ Dracula HDD – 3.5 Inch SATA 6 Gb/s 5400 RPM 256 MB Cache|Standard|12|19.0573|228.69|0.2612|2021|168.956172
 
-#### Making a view for sales_preinv_discount
+#### Creating a view for sales_preinv_discount
 ````sql
 CREATE VIEW sales_preinv_discount AS
    (select s.date,s.product_code,
@@ -183,3 +183,166 @@ on s.customer_code = c.customer_code
 join dim_product p
 on p.product_code = s.product_code)
 ````
+
+#### Top markets,products,customers for a given financial year
+#### Top 5 markets
+````sql
+select 
+     market, 
+     round(sum(net_sales)/1000000,2) as net_sales_mln
+from gdb041.net_sales
+where fiscal_year = 2021
+group by market
+order by net_sales_mln desc
+limit 5;
+````
+#### Top 5 customers
+````sql
+select 
+     c.customer, 
+     round(sum(net_sales)/1000000,2) as net_sales_mln
+from gdb041.net_sales ns
+join dim_customer c
+on ns.customer_code = c.customer_code
+where fiscal_year = 2021
+group by c.customer
+order by net_sales_mln desc
+limit 5;
+````
+#Top 5 products
+````sql
+select 
+	 product,
+     round(sum(net_sales)/1000000,2) as net_sales_mln
+from gdb041.net_sales ns
+where fiscal_year = 2021
+group by product
+order by net_sales_mln desc
+limit 5;
+````
+
+#### Percent share overall
+````sql
+with cte1 as 
+(select 
+	 c.customer,
+     round(sum(net_sales)/1000000,2) as net_sales_mln
+from gdb041.net_sales ns
+join dim_customer c
+on ns.customer_code = c.customer_code
+where fiscal_year = 2021 
+group by c.customer
+order by net_sales_mln desc)
+
+select * ,
+      (net_sales_mln*100)/sum(net_sales_mln) over() as pct_share_overall
+from cte1;
+````
+
+#### Percent market share based on regions
+````sql
+with cte1 as 
+(select 
+	 c.customer,c.region,
+     round(sum(net_sales)/1000000,2) as net_sales_mln
+from gdb041.net_sales ns
+join dim_customer c
+on ns.customer_code = c.customer_code
+where fiscal_year = 2021
+group by c.customer,c.region
+order by net_sales_mln desc)
+
+select * ,
+      (net_sales_mln*100)/sum(net_sales_mln) over(partition by region) as pct_share_overall
+from cte1
+order by region,net_sales_mln desc;
+````
+
+#### Top-3 products in each division by their quantity sold in a given financial year 
+````sql
+with cte1 as
+(SELECT p.product,p.division,sum(s.sold_quantity) as qty,
+       dense_rank() over(partition by division order by sum(s.sold_quantity) desc) as rnk
+FROM gdb041.gross_sales s
+join dim_product p
+on s.product_code = p.product_code
+where s.fiscal_year = 2021
+group by p.product,p.division
+order by p.division,qty desc)
+
+select * 
+from cte1
+where rnk <= 3;
+````
+product|division|qty|rnk
+---|---|---|---
+AQ Pen Drive DRC	N & S	2034569	1
+AQ Digit SSD	N & S	1240149	2
+AQ Clx1	N & S	1238683	3
+AQ Gamers Ms	P & A	2477098	1
+AQ Maxima Ms	P & A	2461991	2
+AQ Master wireless x1 Ms	P & A	2448784	3
+AQ Digit	PC	135092	1
+AQ Gen Y	PC	135031	2
+AQ Elite	PC	134431	3
+
+#### Top 2 markets in every region by their gross sales amount in FY=2021. 
+````sql
+with 
+cte1 as (
+	select c.market,c.region,s.fiscal_year,
+		   (s.sold_quantity*g.gross_price)as gross_sales_amount
+	from fact_sales_monthly s
+	join fact_gross_price g
+	on s.product_code = g.product_code 
+	   and s.fiscal_year = g.fiscal_year
+	join dim_customer c
+	on s.customer_code = c.customer_code
+	where s.fiscal_year = 2021),
+cte2 as 
+	(select market,region,sum(gross_sales_amount)/1000000 as Total_gross_sales_amount
+	from cte1
+	group by market,region),
+cte3 as 
+	(select *,
+		   dense_rank() over(partition by region order by Total_gross_sales_amount desc) as drnk
+	from cte2)
+select market,region,round(Total_gross_sales_amount,2) as gross_sales_mln
+from cte3
+where drnk <= 2;
+````
+market|region|gross_sales_mln
+---|---|---
+India|APAC|455.05
+South Korea|APAC|131.86
+United Kingdom|EU|78.11
+France|EU|67.62
+Mexico|LATAM|2.30
+Brazil|LATAM|2.14
+USA|NA|264.46
+Canada|NA|89.78
+
+#### Forecast accuracy for all customers for a given fiscal year
+with forecast_error_table as 
+	(SELECT s.customer_code,
+			sum(s.sold_quantity) as Total_sold_quantity,
+            sum(s.forecast_quantity) as Total_forecast_quantity,
+			sum(forecast_quantity - sold_quantity) as net_error,
+			sum(forecast_quantity - sold_quantity)*100/sum(forecast_quantity) as net_error_pct,
+			sum(abs(forecast_quantity - sold_quantity)) as abs_error,
+			sum(abs(forecast_quantity - sold_quantity))*100/sum(forecast_quantity) as abs_error_pct
+
+	FROM gdb041.fact_act_est s
+	where s.fiscal_year = 2021
+	group by customer_code)
+    
+select 
+	   e.*,
+       c.customer, 
+       c.market, 
+	if(abs_error_pct > 100,0,100- abs_error_pct) as  forecast_accuracy
+from forecast_error_table e
+join dim_customer  c
+using (customer_code)
+order by forecast_accuracy desc ;
+
