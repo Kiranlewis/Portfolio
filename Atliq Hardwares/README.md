@@ -209,7 +209,7 @@ group by c.customer
 order by net_sales_mln desc
 limit 5;
 ````
-#Top 5 products
+#### Top 5 products
 ````sql
 select 
 	 product,
@@ -276,14 +276,14 @@ where rnk <= 3;
 ````
 product|division|qty|rnk
 ---|---|---|---
-AQ Pen Drive DRC	N & S	2034569	1
-AQ Digit SSD	N & S	1240149	2
-AQ Clx1	N & S	1238683	3
-AQ Gamers Ms	P & A	2477098	1
-AQ Maxima Ms	P & A	2461991	2
-AQ Master wireless x1 Ms	P & A	2448784	3
-AQ Digit	PC	135092	1
-AQ Gen Y	PC	135031	2
+AQ Pen Drive DRC |	N & S |	2034569 |	1
+AQ Digit SSD |	N & S |	1240149 |	2
+AQ Clx1	N & S |	1238683	3
+AQ Gamers Ms |	 P & A |	2477098	 |1
+AQ Maxima Ms |	P & A |	2461991 |	2
+AQ Master wireless x1 Ms |	P & A |	2448784 |	3
+AQ Digit |	PC |	135092 |	1
+AQ Gen Y |	PC |	135031 |	2
 AQ Elite	PC	134431	3
 
 #### Top 2 markets in every region by their gross sales amount in FY=2021. 
@@ -323,6 +323,7 @@ USA|NA|264.46
 Canada|NA|89.78
 
 #### Forecast accuracy for all customers for a given fiscal year
+````sql
 with forecast_error_table as 
 	(SELECT s.customer_code,
 			sum(s.sold_quantity) as Total_sold_quantity,
@@ -345,4 +346,4 @@ from forecast_error_table e
 join dim_customer  c
 using (customer_code)
 order by forecast_accuracy desc ;
-
+````
