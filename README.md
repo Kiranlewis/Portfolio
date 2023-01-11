@@ -8,4 +8,4 @@ Atliq Hardwares | Created various reports for a hardware stores using CTE's,Temp
 Data Mart | | MySQL Workbench
 Data Bank | | MySQL Workbench
 Texture Tales | | MySQL Workbench
-FMCG-Supply Chain Analytics | | MySQL Workbench
+FMCG-Supply Chain Analytics | | PowerBI
