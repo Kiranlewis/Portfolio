@@ -347,3 +347,69 @@ join dim_customer  c
 using (customer_code)
 order by forecast_accuracy desc ;
 ````
+#### Creating a report where customers forecast accuracy has dropped from 2020 to 2021
+#1-Create a temporary table to store forecast accuracy for 2020
+````sql
+drop table if exists temp_2020;
+create temporary table temp_2020
+with forecast_error_table as 
+	(SELECT s.*,
+			sum(s.sold_quantity) as Total_sold_quantity,
+			sum(forecast_quantity - sold_quantity) as net_error,
+			sum(forecast_quantity - sold_quantity)*100/sum(forecast_quantity) as net_error_pct,
+			sum(abs(forecast_quantity - sold_quantity)) as abs_error,
+			sum(abs(forecast_quantity - sold_quantity))*100/sum(forecast_quantity) as abs_error_pct
+
+	FROM gdb041.fact_act_est s
+	where s.fiscal_year = 2020
+	group by customer_code)
+    
+select e.*, c.market,c.customer,
+
+	if(abs_error_pct > 100,0,100- abs_error_pct) as  forecast_accuracy
+from forecast_error_table e
+join dim_customer  c
+using (customer_code)
+order by forecast_accuracy desc ;
+
+#2-Create a temporary table to store forecast accuracy for 2021
+````sql
+drop table if exists temp_2021;
+create temporary table temp_2021
+with forecast_error_table as 
+	(SELECT s.*,
+			sum(s.sold_quantity) as Total_sold_quantity,
+			sum(forecast_quantity - sold_quantity) as net_error,
+			sum(forecast_quantity - sold_quantity)*100/sum(forecast_quantity) as net_error_pct,
+			sum(abs(forecast_quantity - sold_quantity)) as abs_error,
+			sum(abs(forecast_quantity - sold_quantity))*100/sum(forecast_quantity) as abs_error_pct
+
+	FROM gdb041.fact_act_est s
+	where s.fiscal_year = 2021
+	group by customer_code)
+    
+select e.*, c.market,c.customer,
+	if(abs_error_pct > 100,0,100- abs_error_pct) as  forecast_accuracy
+from forecast_error_table e
+join dim_customer  c
+using (customer_code)
+order by forecast_accuracy desc ;
+````
+
+#3- Create ctes with the temporary tables so we can compare both years
+with cte_2020 as(
+	select customer_code,customer,market,forecast_accuracy as forecast_accuracy_2020
+	from temp_2020
+	order by customer,market),
+
+cte_2021 as(
+select customer_code,customer,market,forecast_accuracy as forecast_accuracy_2021
+from temp_2021
+order by customer,market)
+
+select cte_2020.*,cte_2021.forecast_accuracy_2021
+from cte_2020 
+join cte_2021
+using (customer_code,customer,market)
+where cte_2021.forecast_accuracy_2021 < cte_2020.forecast_accuracy_2020
+````
