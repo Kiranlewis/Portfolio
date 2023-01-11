@@ -371,7 +371,7 @@ from forecast_error_table e
 join dim_customer  c
 using (customer_code)
 order by forecast_accuracy desc ;
-
+````
 #2-Create a temporary table to store forecast accuracy for 2021
 ````sql
 drop table if exists temp_2021;
@@ -397,6 +397,7 @@ order by forecast_accuracy desc ;
 ````
 
 #3- Create ctes with the temporary tables so we can compare both years
+````sql
 with cte_2020 as(
 	select customer_code,customer,market,forecast_accuracy as forecast_accuracy_2020
 	from temp_2020
