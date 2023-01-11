@@ -1,2 +1,3 @@
-# Data_Portfolio
-Here is a collection of my portfolio projects
+# Data Portfolio Projects
+This repository provides a sample of Data projects using SQL and POWERBI
+
