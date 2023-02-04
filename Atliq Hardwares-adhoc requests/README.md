@@ -6,13 +6,8 @@ Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
 Novypro : https://www.novypro.com/profile_projects/kiran
 
 ## Overview ##
-    * Atliq Hardwares (imaginary company) is one of the leading computer hardware producers in India and well expanded in other countries too.
-    * However, the management noticed that they do not get enough insights to make quick and smart data-informed decisions. They want to expand their data analytics team by adding several junior data analysts. Tony Sharma, their data analytics director wanted to hire someone who is good at both tech and soft skills. Hence, he decided to conduct a SQL challenge which will help him understand both the skills.
-   * Neo-Banks are a recent development in the financial sector; they are new 
-banks that solely operate online.
-  * This case study focuses on metrics calculations, business growth, and smart 
-data analysis to assist the company more accurately estimate and plan for the 
-future.
+   * Atliq Hardwares a fictious store, is a leading manufacturer of computer hardwares
+  * The goal is to provide insights to the top level management of the company using sql based on their requests.
 
  ## Requests & queries ##
 #### #1.Provide the list of markets in which customer "Atliq Exclusive" operates its business in the APAC region.
