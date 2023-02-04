@@ -11,9 +11,7 @@ data analysis to assist the company more accurately estimate and plan for the
 future.
 
 ## Case study questions & answers ##
-**Schema used**
 
-Insert image here erd diagram
 
 
 #### Different nodes make in the Data Bank network
