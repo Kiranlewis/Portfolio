@@ -1,7 +1,9 @@
 # Atliq Hardwares-adhoc requests #
 Email : arunsaikirans@gmail.com
-Novypro : https://www.novypro.com/profile_projects/kiran
+
 Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
+
+Novypro : https://www.novypro.com/profile_projects/kiran
 
 ## Overview ##
     *  Atliq Hardwares (imaginary company) is one of the leading computer hardware producers in India and well expanded in other countries too.
