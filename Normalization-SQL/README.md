@@ -1,20 +1,26 @@
-# Texture Tales #
+# Data Normalization #
 Email : arunsaikirans@gmail.com
 
 Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
 
-## Task: ##
+## Overview: ##
 
-  * Texture Tales Clothing Company prides themselves on providing an optimized range of clothing and lifestyle wear for the modern adventurer!
-  * To assist the team’s merchandising teams analyze their sales performance and generate a basic financial report to share with the wider business.
+  * This README provides an overview and guidance on data normalization in the context of a relational database management system (RDBMS) like MySQL. Data normalization is the process of organizing data in a database to reduce redundancy and dependency, thereby improving data integrity and efficiency.
   
   
-## Case study questions & answers ##
+## Purpose ##
 **Schema used**
-Insert schema here
+  * The purpose of data normalization is to design a database schema that minimizes duplication of data and ensures that data dependencies are logical and consistent. This leads to a more efficient database structure, easier maintenance, and better scalability.
 
-
-
+## Levels of Normalization ##
+  * Data normalization is typically divided into several levels, known as normal forms. The most common normal forms are First Normal Form (1NF), Second Normal Form (2NF), and Third Normal Form (3NF). Higher normal forms like Boyce-Codd Normal Form (BCNF) and Fourth Normal Form (4NF) may also be considered depending on specific requirements.
+## Process ##
+  * The process of data normalization involves identifying and resolving anomalies in the database schema. This includes:
+    * Ensuring each table represents a single logical entity or relationship.
+    * Eliminating repeating groups and ensuring each column contains atomic values in 1NF.
+    * Removing partial and transitive dependencies in 2NF and 3NF, respectively. 
+## Example ##
+  * Consider a sample dataset of sales transactions with columns like InvoiceNo, CustomerID, ProductID, Quantity, and UnitPrice. By normalizing this data, we can break it down into separate tables for Invoices, Customers, Products, and InvoiceItems, thereby reducing redundancy and improving maintainability.
 
 
 **sales(Sample)**
