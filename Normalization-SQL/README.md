@@ -1,4 +1,4 @@
-![image](https://github.com/Kiranlewis/Portfolio/assets/35210598/9dee19ef-88dc-4e0f-b889-1f673e79a95d)# Data Normalization #
+# Data Normalization #
 Email : arunsaikirans@gmail.com
 
 Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
