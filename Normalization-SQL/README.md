@@ -1,4 +1,4 @@
-# Data Normalization #
+![image](https://github.com/Kiranlewis/Portfolio/assets/35210598/9dee19ef-88dc-4e0f-b889-1f673e79a95d)# Data Normalization #
 Email : arunsaikirans@gmail.com
 
 Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
@@ -22,48 +22,27 @@ Linkedin : https://www.linkedin.com/in/arunsaikiran-senthilkumar-0a1914171/
 ## Example ##
   * Consider a sample dataset of sales transactions with columns like InvoiceNo, CustomerID, ProductID, Quantity, and UnitPrice. By normalizing this data, we can break it down into separate tables for Invoices, Customers, Products, and InvoiceItems, thereby reducing redundancy and improving maintainability.
 
+#### Sample table
+Index|InvoiceNo|StockCode|Description|Quantity|InvoiceDate|UnitPrice|CustomerID|Country
+---|---|---|---|---|---|---|---|
+0|536365|85123A|WHITE HANGING HEART T-LIGHT HOLDER|6|12-01-2010 08:26|2.55|17850|United Kingdom
+1|536365|71053|WHITE METAL LANTERN|6|12-01-2010 08:26|3.39|17850|United Kingdom
+2|536365|84406B|CREAM CUPID HEARTS COAT HANGER|8|12-01-2010 08:26|2.75|17850|United Kingdom
+3|536365|84029G|KNITTED UNION FLAG HOT WATER BOTTLE|6|12-01-2010 08:26|3.39|17850|United Kingdom
+4|536370|22728|ALARM CLOCK BAKELIKE PINK|24|12-01-2010 08:45|3.75|12583|France
+5|536370|22727|ALARM CLOCK BAKELIKE RED |24|12-01-2010 08:45|3.75|12583|France
+6|536370|22726|ALARM CLOCK BAKELIKE GREEN|12|12-01-2010 08:45|3.75|12583|France
+7|536389|22195|LARGE HEART MEASURING SPOONS|24|12-01-2010 10:03|1.65|12431|Australia
+8|536389|22196|SMALL HEART MEASURING SPOONS|24|12-01-2010 10:03|0.85|12431|Australia
+9|536390|22941|CHRISTMAS LIGHTS 10 REINDEER|2|12-01-2010 10:19|8.5|17511|United Kingdom
+10|581574|22077|6 RIBBONS RUSTIC CHARM|12|12-09-2011 12:09|1.95|12526|Germany
+11|581574|22074|6 RIBBONS SHIMMERING PINKS |12|12-09-2011 12:09|0.39|12526|Germany
+12|581574|22621|TRADITIONAL KNITTING NANCY|12|12-09-2011 12:09|1.65|12526|Germany
 
-**sales(Sample)**
-prod_id|qty|price|discount|member|txn_id|start_txn_time
------|-----|-----|-----|-----|-----|-----|
-c4a632|4|13|17|true|54f307|2021-02-13T01:59:43.296Z
-5d267b|4|40|17|true|54f307|2021-02-13T01:59:43.296Z
-b9a74d|4|17|17|true|54f307|2021-02-13T01:59:43.296Z
-2feb6b|2|29|17|true|54f307|2021-02-13T01:59:43.296Z
-c4a632|5|13|21|true|26cc98|2021-01-19T01:39:00.346Z
-e31d39|2|10|21|true|26cc98|2021-01-19T01:39:00.346Z
 
-**product_details(Sample)**
-product_id|price|product_name|category_id|segment_id|style_id|category_name|segment_name|style_name
------|-----|-----|-----|-----|-----|-----|-----|-----|
-2a2353|57|Blue Polo Shirt - Mens|2|5|15|Mens|Shirt|Blue Polo
-2feb6b|29|Pink Fluro Polkadot Socks - Mens|2|6|18|Mens|Socks|Pink Fluro Polkadot
-5d267b|40|White Tee Shirt - Mens|2|5|13|Mens|Shirt|White Tee
-72f5d4|19|Indigo Rain Jacket - Womens|1|4|11|Womens|Jacket|Indigo Rain
-9ec847|54|Grey Fashion Jacket - Womens|1|4|12|Womens|Jacket|Grey Fashion
-b9a74d|17|White Striped Socks - Mens|2|6|17|Mens|Socks|White Striped
 
-**product_prices(Sample)**
-id|product_id|price
------|-----|-----|
-7|c4a632|13
-8|e83aa3|32
-9|e31d39|10
-10|d5e9a6|23
-11|72f5d4|19
 
-**product_hierarchy(Sample)**
-id|parent_id|level_text|level_name
------|-----|-----|-----|
-1| |Womens|Category
-2| |Mens|Category
-3|1|Jeans|Segment
-4|1|Jacket|Segment
-5|2|Shirt|Segment
-6|2|Socks|Segment
-7|3|Navy Oversized|Style
-8|3|Black Straight|Style
-9|3|Cream Relaxed|Style
+
 
 
 #### Total quantity sold for all products
